@@ -22,6 +22,15 @@ class EmployeeDaoImpl(
         return employeeMock;
     }
 
+    override fun updateById(id: Long, fullName: String): Employee? {
+        val entity = employeeMock.stream().filter { employee -> employee.id == id }
+            .findFirst()
+            .orElse(null)
+
+        if (entity != null) entity.fullName = fullName
+        return entity
+    }
+
     override fun deleteById(id: Long) {
         val entity = employeeMock.stream().filter { employee -> employee.id == id }
             .findFirst()

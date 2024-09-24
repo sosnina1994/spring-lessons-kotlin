@@ -58,7 +58,7 @@ class EmployeeDaoImpl(
     }
 
     override fun getAll(): List<Employee?> {
-        return jdbc.jdbcOperations.query(
+        return jdbc.query(
             """
                SELECT e.id, e.full_name, e.email, e.phone_number, e.birth_date
                FROM EMPLOYEES e
@@ -69,7 +69,7 @@ class EmployeeDaoImpl(
 
     override fun updateById(id: Long, fullName: String): Employee? {
 
-        val res: Int = jdbc.update(
+        val res = jdbc.update(
             """
                 UPDATE EMPLOYEES 
                 SET full_name = :full_name
@@ -80,7 +80,7 @@ class EmployeeDaoImpl(
                 "full_name" to fullName,
             )
         )
-        return getById(id).get();
+        return getById(id).get()
     }
 
     override fun deleteById(id: Long) {

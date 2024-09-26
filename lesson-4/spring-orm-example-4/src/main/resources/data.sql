@@ -1,0 +1,9 @@
+INSERT INTO STATUSES(NAME)
+VALUES ('ACTIVE'),
+       ('DEACTIVATED');
+
+INSERT INTO SKILLS(NAME)
+VALUES ('JAVA'),
+       ('POSTGRESQL'),
+       ('C++'),
+       ('KOTLIN');

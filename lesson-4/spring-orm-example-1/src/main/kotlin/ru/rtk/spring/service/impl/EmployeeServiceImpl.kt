@@ -31,9 +31,12 @@ class EmployeeServiceImpl(
         val entities = repo.findAll()
 
         val employeeResponses = ArrayList<EmployeeResponse>()
-
         entities.stream().forEach { employeeResponses.add(mapper.mapToResp(it)) }
         return EmployeesResponse(employeeResponses)
+    }
+
+    override fun delete(id: Long) {
+        repo.deleteById(id)
     }
 
     override fun updateById(id: Long, request: UpdateEmployeeRequest): EmployeeResponse {
@@ -44,10 +47,6 @@ class EmployeeServiceImpl(
 
         val res = repo.save(entity)
         return mapper.mapToResp(res)
-    }
-
-    override fun delete(id: Long) {
-        repo.deleteById(id)
     }
 
 }

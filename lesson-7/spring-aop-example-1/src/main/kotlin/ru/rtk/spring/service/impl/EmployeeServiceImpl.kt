@@ -1,0 +1,58 @@
+package ru.rtk.spring.service.impl
+
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import ru.rtk.spring.domain.CreateEmployeeRequest
+import ru.rtk.spring.domain.EmployeeResponse
+import ru.rtk.spring.domain.EmployeesResponse
+import ru.rtk.spring.domain.UpdateEmployeeRequest
+import ru.rtk.spring.exception.NotFoundException
+import ru.rtk.spring.logging.Logging
+import ru.rtk.spring.mapper.EmployeeMapper
+import ru.rtk.spring.repo.EmployeeRepo
+import ru.rtk.spring.service.EmployeeService
+
+@Service
+class EmployeeServiceImpl(
+    private val repo: EmployeeRepo,
+    private val mapper: EmployeeMapper
+) : EmployeeService {
+
+    @Logging
+    @Transactional
+    override fun save(request: CreateEmployeeRequest): EmployeeResponse {
+        val employee = mapper.mapToModel(request)
+        val entity = repo.save(employee)
+        return mapper.mapToResp(entity)
+    }
+
+    @Logging
+    @Transactional(readOnly = true)
+    override fun getById(id: Long): EmployeeResponse {
+        val entity = repo.findById(id).orElseThrow { NotFoundException("Employee not found") }
+        return mapper.mapToResp(entity)
+    }
+
+    override fun getAll(): EmployeesResponse {
+        val entities = repo.findAll()
+
+        val employeeResponses = ArrayList<EmployeeResponse>()
+        entities.stream().forEach { employeeResponses.add(mapper.mapToResp(it)) }
+        return EmployeesResponse(employeeResponses)
+    }
+
+    override fun delete(id: Long) {
+        repo.deleteById(id)
+    }
+
+    override fun updateById(id: Long, request: UpdateEmployeeRequest): EmployeeResponse {
+        val entity = repo.findById(id).orElseThrow { NotFoundException("Employee not found") }
+        entity.fullName = request.fullName
+        entity.contact?.email = request.email
+        entity.contact?.phoneNumber = request.phoneNumber
+
+        val res = repo.save(entity)
+        return mapper.mapToResp(res)
+    }
+
+}

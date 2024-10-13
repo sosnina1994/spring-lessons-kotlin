@@ -1,17 +1,11 @@
 spring:
   datasource:
-    url: "jdbc:h2:mem:maindb"
+    url: "jdbc:h2:mem:testdb"
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  h2:
-    console:
-      path: /h2-console
-      settings:
-        web-allow-others: true
-      enabled: true
-
   sql:
     init:
       mode: always
+      data-locations: "classpath:data.sql"
       schema-locations: "classpath:schema.sql"

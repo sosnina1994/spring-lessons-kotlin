@@ -1,18 +1,25 @@
 package ru.rtk.spring.service
 
-import ru.rtk.spring.domain.CreateEmployeeRequest
-import ru.rtk.spring.domain.EmployeeResponse
-import ru.rtk.spring.domain.EmployeesResponse
-import ru.rtk.spring.domain.UpdateEmployeeRequest
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Service
+import ru.rtk.spring.model.Employee
+import ru.rtk.spring.service.repo.EmployeeRepository
 
-interface EmployeeService {
-    fun save(request: CreateEmployeeRequest): EmployeeResponse
+@Service
+class EmployeeService(
+    private val repository: EmployeeRepository,
+) {
 
-    fun getById(id: Long): EmployeeResponse
+    fun save(employee: Employee): Employee = repository.save(employee)
 
-    fun getAll(): EmployeesResponse
+    fun getById(id: Long): Employee {
+        return repository.findByIdOrNull(id) ?: throw NoSuchElementException("Сотрудник с $id не найден")
+    }
 
-    fun updateById(id: Long, request: UpdateEmployeeRequest): EmployeeResponse
+    fun getAll(): List<Employee> = repository.findAll().toList()
 
-    fun delete(id: Long)
+    fun delete(id: Long) {
+        repository.deleteById(id)
+    }
+
 }

@@ -1,11 +1,25 @@
 package ru.rtk.spring.model
 
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDate
 
+@Table(name = "EMPLOYEES")
 data class Employee(
-    var id: Long? = null,
-    var fullName: String? = null,
-    var email: String? = null,
-    var phoneNumber: String? = null,
-    var birthDate: LocalDate? = null
+    @Id
+    @Column
+    val id: Long = 0L,
+
+    @Column(value = "FULL_NAME")
+    val fullName: String = "",
+
+    @Column(value = "EMAIL")
+    val email: String? = null,
+
+    @Column(value = "PHONE_NUMBER")
+    val phoneNumber: String = "",
+
+    @Column(value = "BIRTH_DATE")
+    val birthDate: LocalDate = LocalDate.now()
 )

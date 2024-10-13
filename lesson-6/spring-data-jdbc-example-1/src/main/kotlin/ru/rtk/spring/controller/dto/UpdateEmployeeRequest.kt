@@ -1,4 +1,4 @@
-package ru.rtk.spring.domain
+package ru.rtk.spring.controller.dto
 
 data class UpdateEmployeeRequest (
     var fullName: String? = null,

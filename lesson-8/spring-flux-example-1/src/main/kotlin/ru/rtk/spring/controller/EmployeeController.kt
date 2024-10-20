@@ -19,7 +19,6 @@ class EmployeeController(private val repo: EmployeeRepo, private val mapper: Emp
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/employees")
     fun create(@Valid @RequestBody employeeRequest: CreateEmployeeRequest): Mono<ResponseEntity<EmployeeResponse>> {
         return repo.save(mapper.mapToEmployee(employeeRequest))
@@ -43,7 +42,6 @@ class EmployeeController(private val repo: EmployeeRepo, private val mapper: Emp
         return repo.findAll().publishOn(Schedulers.boundedElastic()).map { mapper.mapToResp(it) }
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/employees/{id}")
     fun deleteById(@PathVariable id: Long): Mono<ResponseEntity<Void>> {
         return repo.deleteById(id)

@@ -13,5 +13,4 @@ interface EmployeeRepo: JpaRepository<Employee, Long> {
     @Query("select e from Employee e where lower(e.fullName) like concat('%', :name,'%')")
     fun findByName(@Param("name") name: String): Optional<Employee>
 
-    fun f(email: String): Optional<Employee>
 }

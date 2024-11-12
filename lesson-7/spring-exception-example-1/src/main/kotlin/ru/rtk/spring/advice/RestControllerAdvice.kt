@@ -23,9 +23,16 @@ class RestControllerAdvice {
 
     /** Обработка ошибок кастомных NotFoundException*/
     @ExceptionHandler(NotFoundException::class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     fun handleEntityValidateEx(ex: NotFoundException): ApiException {
         val details = listOf(ex.message)
-        return ApiException(details, HttpStatus.BAD_REQUEST)
+        return ApiException(details, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(NullPointerException::class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleNullPointerException(ex: NotFoundException): ApiException {
+        val details = listOf(ex.message)
+        return ApiException(details, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }

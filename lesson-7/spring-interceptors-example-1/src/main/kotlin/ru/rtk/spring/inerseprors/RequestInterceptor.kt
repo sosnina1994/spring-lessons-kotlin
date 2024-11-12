@@ -25,9 +25,10 @@ class RequestInterceptor : HandlerInterceptor {
 
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        MDC.put(REQUEST_ID_MDC_NAME, getRequestId(request))
+        val requestId = getRequestId(request)
+        MDC.put(REQUEST_ID_MDC_NAME, requestId)
         request.setAttribute(START_TIME_ATTRIBUTE_NAME, System.currentTimeMillis())
-        log.info(">>> REQ : ${request.requestURI}")
+        log.info(">>> REQ : ${request.requestURI} with ID $requestId")
         return true
     }
 
@@ -40,7 +41,7 @@ class RequestInterceptor : HandlerInterceptor {
         if (ex != null) {
             log.warn(ex.message, ex)
         }
-        log.info("<<<< RESP {}, {}, {}", request.method, request.requestURI, response.status)
+        log.info("<<<< RESP {}, {}, {}, {}", request.method, request.requestURI, response.status, MDC.get(REQUEST_ID_MDC_NAME))
         MDC.clear()
     }
 

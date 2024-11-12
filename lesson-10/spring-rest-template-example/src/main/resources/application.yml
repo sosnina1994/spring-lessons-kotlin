@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+root-service:
+  rest-config:
+    connect-timeout: 5000
+    request-timeout: 5000
+    socket-timeout: 5000
+    max-total: 10
+    default-max-per-route: 5
+    url: "https://localhost:8085"

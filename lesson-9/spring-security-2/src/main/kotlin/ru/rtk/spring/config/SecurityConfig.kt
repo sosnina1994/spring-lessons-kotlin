@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.security.provisioning.JdbcUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import javax.sql.DataSource
 
 
@@ -23,16 +22,12 @@ class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .csrf { csrf -> csrf.disable() } // Отключаем CSRF (не рекомендуется для продакшена)
+            .csrf { csrf -> csrf.disable() } // Отключаем CSRF (не рекомендуется для продакшена) }// Не создаем сессию
             .authorizeHttpRequests { auth ->
                 auth
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Открытый доступ к сваггеру
                     .anyRequest().authenticated()
             } // Все остальные запросы требуют аутентификации
-            .sessionManagement { sessionManagement ->
-                sessionManagement
-                    .sessionCreationPolicy(SessionCreationPolicy.NEVER)
-            }// Не создаем сессию
 
             //.httpBasic(Customizer.withDefaults()) //  аутенитификация для запросов сваггера
             .formLogin(Customizer.withDefaults()) // Включаем форму логина
